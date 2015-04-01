@@ -10,6 +10,7 @@ block content
 					th(style='width:180px') Name
 					th(style='width:200px') Location
 					th(style='width:180px') Username
+					th(style='width:180px') E-Mail
 					th Account Created
 			tbody
 			- for (var i = 0; i < accts.length; i++)
@@ -18,4 +19,5 @@ block content
 					td= accts[i].name
 					td= accts[i].country
 					td= accts[i].user
+					td= accts[i].email
 					td= accts[i].date

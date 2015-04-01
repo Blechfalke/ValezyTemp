@@ -14,12 +14,20 @@ var db = new MongoDB(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}),
 	db.open(function(e, d){
 	if (e) {
 		console.log(e);
-	}	else{
+	} else {
 		console.log('connected to database :: ' + dbName);
+		
+		var myCursor = db.collection('accounts').find({});
+		
+		myCursor.toArray(function(err, docs){
+			if (!err)
+				console.log(docs);
+		})	
 	}
 });
 var accounts = db.collection('accounts');
-console.log(accounts);
+
+
 /* login validation methods */
 
 exports.autoLogin = function(user, pass, callback)
@@ -38,11 +46,11 @@ exports.manualLogin = function(user, pass, callback)
 	accounts.findOne({user:user}, function(e, o) {
 		if (o == null){
 			callback('user-not-found');
-		}	else{
+		} else{
 			validatePassword(pass, o.pass, function(err, res) {
 				if (res){
 					callback(null, o);
-				}	else{
+				} else{
 					callback('invalid-password');
 				}
 			});
@@ -61,7 +69,7 @@ exports.addNewAccount = function(newData, callback)
 			accounts.findOne({email:newData.email}, function(e, o) {
 				if (o){
 					callback('email-taken');
-				}	else{
+				} else {
 					saltAndHash(newData.pass, function(hash){
 						newData.pass = hash;
 					// append date stamp when record was created //
@@ -82,8 +90,10 @@ exports.updateAccount = function(newData, callback)
 		o.country 	= newData.country;
 		if (newData.pass == ''){
 			accounts.save(o, {safe: true}, function(err) {
-				if (err) callback(err);
-				else callback(null, o);
+				if (err) 
+					callback(err);
+				else 
+					callback(null, o);
 			});
 		}	else{
 			saltAndHash(newData.pass, function(hash){
@@ -120,22 +130,26 @@ exports.deleteAccount = function(id, callback)
 
 exports.getAccountByEmail = function(email, callback)
 {
-	accounts.findOne({email:email}, function(e, o){ callback(o); });
+	accounts.findOne({email:email}, function(e, o){ c
+		allback(o); 
+	});
 }
 
 exports.validateResetLink = function(email, passHash, callback)
 {
-	accounts.find({ $and: [{email:email, pass:passHash}] }, function(e, o){
+	accounts.find({ $and: [{email:email, 
+							pass:passHash}] }, function(e, o){
 		callback(o ? 'ok' : null);
 	});
 }
 
 exports.getAllRecords = function(callback)
 {
-	accounts.find().toArray(
-		function(e, res) {
-		if (e) callback(e)
-		else callback(null, res)
+	accounts.find().toArray( function(e, res) {
+		if (e) 
+			callback(e)
+		else 
+			callback(null, res)
 	});
 };
 
@@ -183,10 +197,11 @@ var getObjectId = function(id)
 
 var findById = function(id, callback)
 {
-	accounts.findOne({_id: getObjectId(id)},
-		function(e, res) {
-		if (e) callback(e)
-		else callback(null, res)
+	accounts.findOne({_id: getObjectId(id)}, function(e, res) {
+		if (e) 
+			callback(e)
+		else 
+			callback(null, res)
 	});
 };
 
