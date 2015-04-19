@@ -3,7 +3,7 @@ $(document).ready(function(){
 
 	var hc = new HomeController();
 	var av = new AccountValidator();
-	
+
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
 			if (av.validateForm() == false){
@@ -27,6 +27,8 @@ $(document).ready(function(){
 	});
 	$('#name-tf').focus();
 	$('#github-banner').css('top', '41px');
+
+
 
 // customize the account settings form //
 	

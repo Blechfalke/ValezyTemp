@@ -1,0 +1,15 @@
+extends layout
+block content
+    div.container(style='margin:20px')
+        table.table.table-bordered.table-striped
+            thead
+                tr
+                    th(style='width:200px') Profile Name
+                    th(style='width:200px') User
+                    th Account Created
+            tbody
+            for profile in profiles
+                tr
+                    td #{profile.profileName}
+                    td #{profile.user}
+                    td #{profile.date}

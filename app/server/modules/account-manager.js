@@ -16,13 +16,13 @@ var db = new MongoDB(dbName, new Server(dbHost, dbPort, {auto_reconnect: true}),
 		console.log(e);
 	} else {
 		console.log('connected to database :: ' + dbName);
-		
+
 		var myCursor = db.collection('accounts').find({});
-		
+
 		myCursor.toArray(function(err, docs){
 			if (!err)
 				console.log(docs);
-		})	
+		})
 	}
 });
 var accounts = db.collection('accounts');
@@ -130,8 +130,8 @@ exports.deleteAccount = function(id, callback)
 
 exports.getAccountByEmail = function(email, callback)
 {
-	accounts.findOne({email:email}, function(e, o){ c
-		allback(o); 
+	accounts.findOne({email:email}, function(e, o){
+		callback(o);
 	});
 }
 

@@ -1,0 +1,46 @@
+extends layout
+
+// preset form values if we receive a userdata object //
+- user = typeof(udata) != 'undefined' ? udata : { }
+// store the userId on the client side in a hidden input field //
+input(type='hidden', value= user._id)#userId
+
+block content
+    #account-form-container
+        form( method="post")#account-form.form-horizontal.well.span6
+            h1 My Profiles
+            p#sub1.subheading Here you can see all your Profiles.
+
+            hr
+            #user-cg.control-group
+                label.control-label(for='user-tf') Username
+                .controls
+                    input#user-tf.input-xlarge.disabled(type='text', name='user', value= user.user)
+
+            p#sub2.subheading
+
+            div.container(style='margin:20px')
+            table.table.table-bordered.table-striped
+                thead
+                    tr
+                        th(style='width:200px') Profile Name
+                        th(style='width:200px') Name
+                        th(style='width:180px') Age
+                        th Actions
+                tbody
+                for profile in profiles
+                    tr
+                        td #{profile.profileName}
+                        td #{profile.name}
+                        td #{profile.age}
+                        td
+                            a(href='edit-profiles/'+profile._id)#edit-profile Edit
+                p#sub2.subheading
+
+            div.clear-fix
+            hr
+            div.btm-links
+                a(href='/add-profiles')#create-account Create a new Profile
+
+// display form errors in a custom modal window //
+include modals/form-errors
