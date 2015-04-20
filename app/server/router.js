@@ -190,20 +190,24 @@ module.exports = function (app) {
     });
 
     app.post('/add-profiles', function (req, res) {
-        PM.addNewProfile({
-            user: req.param('user'),
-            profileName: req.param('profile-name'),
-            description : req.param('description'),
-            name: req.param('name'),
-            age: req.param('age')
-        }, function (e) {
-            if (e) {
-                res.send(e, 400);
-            } else {
-                res.send('ok', 200);
-                res.redirect('profiles');
-            }
-        });
+        if (req.session.user == null) {
+            // if user is not logged-in redirect back to login page //
+            res.redirect('/');
+        } else {
+            PM.addNewProfile({
+                user: req.session.user.user,
+                profileName: req.param('profile-name'),
+                description: req.param('description'),
+                name: req.param('name'),
+                age: req.param('age')
+            }, function (e) {
+                if (e) {
+                    res.send(e, 400);
+                } else {
+                    res.redirect('profiles');
+                }
+            });
+        }
     });
 
     app.get('/edit-profiles/:id', function (req, res) {
