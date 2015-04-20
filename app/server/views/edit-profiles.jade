@@ -9,14 +9,16 @@ input(type='hidden', value= profile._id)#profileId
 
 block content
 
-    p #{profile.length} name: #{profile.name}
+    input(type='hidden', value= user._id)#userId
+
+    p lenghth: #{profile.length} name: #{profile.name}
 
     #account-form-container
         form( method="post")#account-form.form-horizontal.well.span6
             h1 Edit Profile
             p#sub1.subheading Here you can edit the Profiles for your account.
-
             hr
+            input(type='hidden', name='id', value= profile._id)#profileId
             #user-cg.control-group
                 label.control-label(for='user-tf') Username
                 .controls

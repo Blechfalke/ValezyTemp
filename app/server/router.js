@@ -226,6 +226,24 @@ module.exports = function (app) {
         }
     });
 
+    app.post('/edit-profiles/:id', function (req, res) {
+        PM.updateProfile({
+            id: req.param('id'),
+            user: req.param('user'),
+            profileName: req.param('profile-name'),
+            description : req.param('description'),
+            name: req.param('name'),
+            age: req.param('age')
+        }, function (e) {
+            if (e) {
+                res.send(e, 400);
+            } else {
+                res.send('ok', 200);
+                res.redirect('profiles');
+            }
+        });
+    });
+
 // view & delete accounts //
 
     app.get('/print', function (req, res) {

@@ -29,34 +29,25 @@ var profiles = db.collection('profiles');
 /* record insertion, update & deletion methods */
 
 exports.addNewProfile = function (newData, callback) {
-        // append date stamp when record was created //
-        newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-        profiles.insert(newData, {safe: true}, callback);
+    // append date stamp when record was created //
+    newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
+    profiles.insert(newData, {safe: true}, callback);
 };
 
-//exports.updateProfile = function (newData, callback) {
-//    profiles.findOne({user: newData.user}, function (e, o) {
-//        o.name = newData.name;
-//        o.email = newData.email;
-//        o.country = newData.country;
-//        if (newData.pass == '') {
-//            profiles.save(o, {safe: true}, function (err) {
-//                if (err)
-//                    callback(err);
-//                else
-//                    callback(null, o);
-//            });
-//        } else {
-//            saltAndHash(newData.pass, function (hash) {
-//                o.pass = hash;
-//                profiles.save(o, {safe: true}, function (err) {
-//                    if (err) callback(err);
-//                    else callback(null, o);
-//                });
-//            });
-//        }
-//    });
-//}
+exports.updateProfile = function (newData, callback) {
+    profiles.findOne({_id: getObjectId(newData.id)}, function (e, o) {
+        o.profileName = newData.profileName;
+        o.description = newData.description;
+        o.name = newData.name;
+        o.age = newData.age;
+        profiles.save(o, {safe: true}, function (err) {
+            if (err)
+                callback(err);
+            else
+                callback(null, o);
+        });
+    });
+}
 
 /* account lookup methods */
 
@@ -69,9 +60,8 @@ exports.getAllProfiles = function (callback) {
     });
 };
 
-exports.getProfilesFromUser = function(user, callback)
-{
-    profiles.find({user:user}).toArray(function (e, res) {
+exports.getProfilesFromUser = function (user, callback) {
+    profiles.find({user: user}).toArray(function (e, res) {
         if (e)
             callback(e);
         else
@@ -83,20 +73,18 @@ var getObjectId = function (id) {
     return profiles.db.bson_serializer.ObjectID.createFromHexString(id)
 };
 
-exports.findById = function(id, callback)
-{
-	profiles.findOne({_id: getObjectId(id)}, function(e, res) {
-		if (e) 
-			callback(e)
-		else 
-			callback(null, res)
-	});
+exports.findById = function (id, callback) {
+    profiles.findOne({_id: getObjectId(id)}, function (e, res) {
+        if (e)
+            callback(e)
+        else
+            callback(null, res)
+    });
 };
 
 
-exports.getProfileByProfileName = function(pname, callback)
-{
-    profiles.find({profileName:pname}).toArray(function (e, res) {
+exports.getProfileByProfileName = function (pname, callback) {
+    profiles.find({profileName: pname}).toArray(function (e, res) {
         if (e)
             callback(e);
         else
