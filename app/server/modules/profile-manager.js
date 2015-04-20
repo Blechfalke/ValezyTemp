@@ -51,6 +51,11 @@ exports.updateProfile = function (newData, callback) {
 
 /* account lookup methods */
 
+exports.deleteProfile = function(id, callback)
+{
+    profiles.remove({_id: getObjectId(id)}, callback);
+}
+
 exports.getAllProfiles = function (callback) {
     profiles.find().toArray(function (e, res) {
         if (e)

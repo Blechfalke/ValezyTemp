@@ -278,6 +278,16 @@ module.exports = function (app) {
         });
     });
 
+    app.post('/delete-profile', function (req, res) {
+        PM.deleteProfile(req.body.id, function (e, obj) {
+            if (!e) {
+                res.send('ok', 200);
+            } else {
+                res.send('record not found', 400);
+            }
+        });
+    });
+
     app.get('/reset', function (req, res) {
         AM.delAllRecords(function () {
             res.redirect('/print');

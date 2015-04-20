@@ -8,11 +8,6 @@ input(type='hidden', value= user._id)#userId
 input(type='hidden', value= profile._id)#profileId
 
 block content
-
-    input(type='hidden', value= user._id)#userId
-
-    p lenghth: #{profile.length} name: #{profile.name}
-
     #account-form-container
         form( method="post")#account-form.form-horizontal.well.span6
             h1 Edit Profile
@@ -49,7 +44,18 @@ block content
                 p#sub2.subheading
 
                 .form-actions
-                    button(type='button') Delete
+                    button(type='button')#profile-delete-btn Delete
                     button(type='submit') Save Profile
-// display form errors in a custom modal window //
-include modals/form-errors
+
+    // display form errors in a custom modal window //
+    include modals/form-errors
+    include modals/alert
+    include modals/confirm
+
+    block scripts
+        script(src='/vendor/jquery.min.js')
+        script(src='/vendor/jquery.form.js')
+        script(src='/vendor/bootstrap-modal.js')
+        script(src='/vendor/bootstrap-transition.js')
+        script(src='/js/views/profile.js')
+        script(src='/js/controllers/profileController.js')
