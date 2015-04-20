@@ -2,14 +2,11 @@ extends layout
 
 // preset form values if we receive a userdata object //
 - user = typeof(udata) != 'undefined' ? udata : { }
-//- profile = typeof(profile) != 'undefined' ? profile : { }
 // store the userId on the client side in a hidden input field //
 input(type='hidden', value= user._id)#userId
 input(type='hidden', value= profile._id)#profileId
 
 block content
-
-    p #{profile.length} name: #{profile.name}
 
     #account-form-container
         form( method="post")#account-form.form-horizontal.well.span6

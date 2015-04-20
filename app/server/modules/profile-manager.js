@@ -79,9 +79,6 @@ exports.getProfilesFromUser = function(user, callback)
     });
 };
 
-var getObjectId = function (id) {
-    return profiles.db.bson_serializer.ObjectID.createFromHexString(id)
-};
 
 exports.findById = function(id, callback)
 {
@@ -106,12 +103,6 @@ exports.getProfileByProfileName = function(pname, callback)
 
 /* auxiliary methods */
 
-
-var findById = function (id, callback) {
-    profiles.findOne({_id: getObjectId(id)}, function (e, res) {
-        if (e)
-            callback(e);
-        else
-            callback(null, res)
-    });
+var getObjectId = function (id) {
+    return profiles.db.bson_serializer.ObjectID.createFromHexString(id)
 };
