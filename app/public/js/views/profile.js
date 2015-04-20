@@ -3,8 +3,15 @@ $(document).ready(function() {
     var hc = new ProfileController();
 
     // customize the account settings form //
-    $('#account-form h1').text('Edit Profile');
-    $('#account-form #sub1').text('Here you can edit the Profiles for your account.');
+    $('#edit-profile-form h1').text('Edit Profile');
+    $('#edit-profile-form #sub1').text('Here you can edit the Profiles for your account.');
+
+    $('#add-profile-form h1').text('Add Profile');
+    $('#add-profile-form #sub1').text('Here you can add the Profiles for your account.');
+
+    $('#profile-form h1').text('My Profiles');
+    $('#profile-form #sub1').text('Here you can see the Profiles for your account.');
+
     $('#user-tf').attr('disabled', 'disabled');
     $('#profile-delete-btn').html('Delete');
     $('#profile-delete-btn').addClass('btn-danger');
