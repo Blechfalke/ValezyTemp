@@ -6,12 +6,13 @@ extends layout
 input(type='hidden', value= user._id)#userId
 
 block content
+
 	include header
 	
 	#account-form-container
 		form( method="post")#account-form.form-horizontal.well.span6
-			h1 My Profiles
-			p#sub1.subheading Here you can see all your Profiles.
+			h1
+			p#sub1.subheading 
 
 			hr
 			#user-cg.control-group
@@ -56,4 +57,5 @@ block scripts
 	script(src='/vendor/bootstrap-transition.js')
 	script(src='/js/views/logout.js')
 	script(src='/js/controllers/logoutController.js')
-	
+	script(src='/js/views/profile.js')
+	script(src='/js/controllers/profileController.js')
