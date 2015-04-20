@@ -1,6 +1,6 @@
 module.exports = [
     {short:"  " , name:"Please select a language"},
     {short:"DE" , name:"Deutsch"},
-    {short:"FR" , name:"Français"},
+    {short:"FR" , name:"FranÃ§ais"},
     {short:"EN" , name:"English"}
 ]

@@ -212,9 +212,11 @@ module.exports = function (app) {
             // if user is not logged-in redirect back to login page //
             res.redirect('/');
         } else {
-            PM.getProfileByProfileName(req.params.id, function (e, profile) {
-                if (e) return next(e);
+            PM.findById(req.params.id, function (e, profile) {
+            	if (e) 
+                	return next(e);
 
+                console.log(profile);
                 return res.render('edit-profiles', {
                     title: 'Edit Profiles',
                     profile: profile,

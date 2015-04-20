@@ -83,22 +83,16 @@ var getObjectId = function (id) {
     return profiles.db.bson_serializer.ObjectID.createFromHexString(id)
 };
 
-exports.getProfileById = function(id, callback)
+exports.findById = function(id, callback)
 {
-    //profiles.find({_id:getObjectId(id)}).toArray(function (e, res) {
-    //if (e)
-    //    callback(e);
-    //else
-    //    console.log("Profile found to edit: "+res.profileName)
-    //    callback(null, res)
-    //});
-    profiles.findOne({_id:id}, function(e, o){
-        console.log("Profile found to edit, length = "+ o.length)
-        callback(o);
-    });
+	profiles.findOne({_id: getObjectId(id)}, function(e, res) {
+		if (e) 
+			callback(e)
+		else 
+			callback(null, res)
+	});
+};
 
-
-}
 
 exports.getProfileByProfileName = function(pname, callback)
 {
