@@ -3,7 +3,7 @@ var AM = require('./modules/account-manager');
 var PM = require('./modules/profile-manager');
 var EM = require('./modules/email-dispatcher');
 
-module.exports = function (app) {
+module.exports = function (app, rooms) {
 
 // main login page //
 
@@ -248,7 +248,7 @@ module.exports = function (app) {
         });
     });
 
-// view & delete accounts //
+// view & delete accounts/profiles //
 
     app.get('/print', function (req, res) {
         AM.getAllRecords(function (e, accounts) {
@@ -297,6 +297,54 @@ module.exports = function (app) {
             res.redirect('/print');
         });
     });
+
+    //chatrooms
+
+    //go to chatrooms
+    app.get('/chatrooms', function(req, res, next){
+
+        //render the chatrooms file
+        res.render('chatrooms', {title:'Chatrooms', udata:req.session.user});
+
+    })
+
+    //go to specific chat room ( room/:id -> :id = any id given in the url)
+    app.get('/room/:id', function(req, res, next){
+
+        //get room name
+        var room_name = findTitle(req.params.id);
+
+        //req.params.id = get id from url parameters
+        res.render('room', {udata : req.session.user, room_number : req.params.id, room_name : room_name})
+
+    })
+
+    //get room name
+    function findTitle (room_id) {
+
+        var n = 0;
+
+        //loop through all rooms
+        while(n < rooms.length){
+
+            //check if room_id given is = to room_number in DB
+            if (rooms[n].room_number == room_id) {
+
+                //return name
+                return rooms[n].room_name;
+                break;
+
+            }else{
+
+                n++;
+                continue;
+
+            }
+
+        }
+
+    }
+
 
     app.get('*', function (req, res) {
         res.render('404', {title: 'Page Not Found'});

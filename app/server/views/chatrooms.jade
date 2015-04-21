@@ -1,0 +1,26 @@
+!!! 5
+html
+    head
+        title Node.js Chat
+        link(rel='stylesheet', href='/css/chatroom.css')
+
+    // preset form values if we receive a userdata object //
+    - user = typeof(udata) != 'undefined' ? udata : { }
+    // store the userId on the client side in a hidden input field //
+    input(type='hidden', value= user._id)#userId
+
+body
+    div#cr-container
+        h1#cr-title Chat
+        div#cr-userbox
+            h3#userName #{user.user}
+        div#cr-newroom
+            input#newRoom(type='text', autocomplete="off")
+            button(type='button')#create Create Room
+        div#cr-roomlist
+            ul#roomlist
+
+
+    script(src='/vendor/jquery.min.js')
+    script(src="/socket.io/socket.io.js")
+    script(src='/js/views/chatrooms.js')
