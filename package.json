@@ -21,7 +21,8 @@
 		"mongodb": "1.2.7",
 		"moment" : "1.7.2",
 		"emailjs": "0.3.3",
-	  	"multer": "~0.1.6"
+	  	"multer": "~0.1.6",
+	    "socket.io": "0.9.17"
 	},
 	"engines": {
 		"node": "0.8.14",
