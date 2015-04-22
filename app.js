@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var multer = require('multer');
 var app = express();
 
 app.configure(function(){
@@ -9,6 +10,7 @@ app.configure(function(){
 	app.locals.pretty = true;
 //	app.use(express.favicon());
 //	app.use(express.logger('dev'));
+	app.use(multer({ dest: './uploads/'}));
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
 	app.use(express.session({ secret: 'super-duper-secret-secret' }));
@@ -17,11 +19,11 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/app/public'));
 });
 
+require('./app/server/router')(app);
+
 app.configure('development', function(){
 	app.use(express.errorHandler());
 });
-
-require('./app/server/router')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));

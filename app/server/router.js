@@ -1,10 +1,13 @@
-var CT = require('./modules/country-list');
-var AM = require('./modules/account-manager');
-var PM = require('./modules/profile-manager');
-var EM = require('./modules/email-dispatcher');
+var CT 		= require('./modules/country-list');
+var AM 		= require('./modules/account-manager');
+var PM 		= require('./modules/profile-manager');
+var EM 		= require('./modules/email-dispatcher');
+var multer  = require('multer');
+var util	= require('util');
 
 module.exports = function (app) {
-
+	
+	
 // main login page //
 
     app.get('/', function (req, res) {
@@ -248,6 +251,69 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/photos', function (req, res) {
+        if (req.session.user == null) {
+            // if user is not logged-in redirect back to login page //
+            res.redirect('/');
+        } else {
+            //PM.getProfilesFromUser(req.session.user.user, function (e, profiles) {
+                //if (e) return next(e);
+                return res.render('photos', {
+                    title: 'My Photos',
+                    udata: req.session.user
+                });
+            //})
+        }
+    });
+    
+    
+    
+    
+    var multerUp = multer({ dest: './uploads/',
+    	rename: function (fieldname, filename) {
+    		return filename+Date.now();
+    	},
+    	onFileUploadStart: function (file) {
+    		console.log(file.originalname + ' is starting ...')
+    	},
+    	onFileUploadComplete: function (file) {
+    		console.log(file.fieldname + ' uploaded to  ' + file.path)
+    		done=true;
+    	}
+    });
+    
+    app.post('/api/photo', multerUp, function(req, res) {
+
+            console.log('IN POST (/api/photo)');
+            console.log(req.body)
+
+            var filesUploaded = 0;
+
+            if ( Object.keys(req.files).length === 0 ) {
+                console.log('no files uploaded');
+            } else {
+                console.log(req.files)
+
+                var files = req.files.file1;
+                if (!util.isArray(req.files.file1)) {
+                    files = [ req.files.file1 ];
+                } 
+
+                filesUploaded = files.length;
+            }
+
+            res.json({ message: 'Finished! Uploaded ' + filesUploaded + ' files.  Route is /files2' });
+        });
+
+
+//    app.post('/api/photo',function(req,res){
+//    	console.log('waiting');
+//    	if(app.locals.done == true){
+//    		console.log(req.files);
+//    		res.end("File uploaded.");
+//    	}
+//    });
+    
 // view & delete accounts //
 
     app.get('/print', function (req, res) {

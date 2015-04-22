@@ -1,0 +1,38 @@
+extends layout
+
+// preset form values if we receive a userdata object //
+- user = typeof(udata) != 'undefined' ? udata : { }
+// store the userId on the client side in a hidden input field //
+input(type='hidden', value= user._id)#userId
+block content
+
+	include header
+
+	#account-form-container
+		form( method="post", enctype = "multipart/form-data",  action="/api/photo")#upload-form.form-horizontal.well.span6
+			h1
+			p#sub1.subheading #{title}
+
+			#user-cg.control-group
+				label.control-label(for='user-tf') Username
+				.controls
+					input#user-tf.input-xlarge.disabled(type='text', name='user', value= user.user)
+
+			hr
+			input(type='file', name='uploadPhoto')
+			input(type='submit', value='Upload Image', name='submit')
+
+	include modals/alert
+	
+// display form errors in a custom modal window //
+include modals/form-errors
+
+block scripts
+	script(src='/vendor/jquery.min.js')
+	script(src='/vendor/jquery.form.js')
+	script(src='/vendor/bootstrap-modal.js')
+	script(src='/vendor/bootstrap-transition.js')
+	script(src='/js/views/logout.js')
+	script(src='/js/controllers/logoutController.js')
+	script(src='/js/views/profile.js')
+	script(src='/js/controllers/profileController.js')
