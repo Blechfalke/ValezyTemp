@@ -2,6 +2,7 @@ var CT 		= require('./modules/country-list');
 var AM 		= require('./modules/account-manager');
 var PM 		= require('./modules/profile-manager');
 var EM 		= require('./modules/email-dispatcher');
+var PicM	= require('./modules/picture-manager');
 var multer  = require('multer');
 var util	= require('util');
 
@@ -255,33 +256,46 @@ module.exports = function (app, rooms) {
             // if user is not logged-in redirect back to login page //
             res.redirect('/');
         } else {
-            //PM.getProfilesFromUser(req.session.user.user, function (e, profiles) {
-                //if (e) return next(e);
-                return res.render('photos', {
-                    title: 'My Photos',
-                    udata: req.session.user
-                });
-            //})
+        	PicM.readPictures(0, function(e, pictures){
+        		if (e) 
+        			return next(e);
+        		return res.render('allPhotos', {
+        			title: 'My Photos',
+                    udata: req.session.user,
+                    pics: pictures
+        		});
+        	});
         }
     });
     
-    
-    
-    
-    var multerUp = multer({ dest: './uploads/',
-    	rename: function (fieldname, filename) {
-    		return filename+Date.now();
-    	},
-    	onFileUploadStart: function (file) {
-    		console.log(file.originalname + ' is starting ...')
-    	},
-    	onFileUploadComplete: function (file) {
-    		console.log(file.fieldname + ' uploaded to  ' + file.path)
-    		done=true;
-    	}
+    app.get('/allPhotos', function (req, res) {
+      
+        	PicM.readPictures(0, function(e, pictures){
+        		if (e) 
+        			return next(e);
+        		return res.render('allPhotos', {
+        			title: 'My Photos',
+                    udata: req.session.user,
+                    pics: pictures
+        		});
+        	});
+        
     });
     
-    app.post('/api/photo', multerUp, function(req, res) {
+//    var multerUp = multer({ dest: './uploads/',
+//    	rename: function (fieldname, filename) {
+//    		return filename+Date.now();
+//    	},
+//    	onFileUploadStart: function (file) {
+//    		console.log(file.originalname + ' is starting ...')
+//    	},
+//    	onFileUploadComplete: function (file) {
+//    		console.log(file.fieldname + ' uploaded to  ' + file.path)
+//    		done=true;
+//    	}
+//    });
+    
+    app.post('/api/photos', function(req, res) {
 
             console.log('IN POST (/api/photo)');
             console.log(req.body)
@@ -367,10 +381,8 @@ module.exports = function (app, rooms) {
 
     //go to chatrooms
     app.get('/chatrooms', function(req, res, next){
-
         //render the chatrooms file
         res.render('chatrooms', {title:'Chatrooms', udata:req.session.user});
-
     })
 
     //go to specific chat room ( room/:id -> :id = any id given in the url)
@@ -386,30 +398,20 @@ module.exports = function (app, rooms) {
 
     //get room name
     function findTitle (room_id) {
-
         var n = 0;
-
         //loop through all rooms
         while(n < rooms.length){
-
             //check if room_id given is = to room_number in DB
             if (rooms[n].room_number == room_id) {
-
                 //return name
                 return rooms[n].room_name;
                 break;
-
             }else{
-
                 n++;
                 continue;
-
             }
-
         }
-
     }
-
 
     app.get('*', function (req, res) {
         res.render('404', {title: 'Page Not Found'});

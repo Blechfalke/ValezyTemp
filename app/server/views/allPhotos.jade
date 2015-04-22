@@ -1,0 +1,16 @@
+div.container
+	table.table.table-bordered.table-striped.row.row-centered
+		thead
+			tr
+				th(style='width:150px') Picture
+				th(style='width:100px') Name
+				th(style='width:50px') 
+				th(style='width:50px') 
+		tbody
+		for pic in pics
+			tr
+				td
+					img(style='width:300px', src='data:img/jpg;base64,#{pic.content}')
+				td #{pic.name}
+				td Edit
+				td Delete

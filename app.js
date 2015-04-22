@@ -11,7 +11,19 @@ app.configure(function(){
 	app.locals.pretty = true;
 //	app.use(express.favicon());
 //	app.use(express.logger('dev'));
-	app.use(multer({ dest: './uploads/'}));
+
+	app.use(multer({ dest: './uploads/',
+    	rename: function (fieldname, filename) {
+    		return filename+Date.now();
+    	},
+    	onFileUploadStart: function (file) {
+    		console.log(file.originalname + ' is starting ...')
+    	},
+    	onFileUploadComplete: function (file) {
+    		console.log(file.fieldname + ' uploaded to  ' + file.path)
+    	}
+    }));
+	
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
 	app.use(express.session({ secret: 'super-duper-secret-secret' }));
@@ -20,9 +32,6 @@ app.configure(function(){
 	app.use(express.static(__dirname + '/app/public'));
 });
 
-app.configure('development', function(){
-	app.use(express.errorHandler());
-});
 
 require('./app/server/router')(app, rooms);
 
@@ -33,6 +42,10 @@ var io = require('socket.io').listen(server);
 
 //include socket.js
 require('./app/server/socket/socket.js')(io, rooms);
+
+app.configure('development', function(){
+	app.use(express.errorHandler());
+});
 
 server.listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));
